@@ -26,12 +26,6 @@ module.exports = function(grunt) {
 				                 dest : 'dist/<%= pkg.name %>.min.js'
 			                 },
 		                 },
-		                 cssmin  : {
-			                 build : {
-				                 src  : 'src/<%= pkg.name %>.css',
-				                 dest : 'dist/<%= pkg.name %>.min.css'
-			                 }
-		                 },
 		                 copy    : {
 			                 dist : {
 				                 files : [
@@ -43,10 +37,6 @@ module.exports = function(grunt) {
 						                 src  : 'dist/<%= pkg.name %>.min.js.map',
 						                 dest : 'dist/<%= pkg.name %><%= postFix %>.min.js.map',
 					                 },
-					                 {
-						                 src  : 'dist/<%= pkg.name %>.min.css',
-						                 dest : 'dist/<%= pkg.name %><%= postFix %>.min.css',
-					                 }
 				                 ]
 
 			                 }
@@ -54,10 +44,9 @@ module.exports = function(grunt) {
 	                 });
 
 	grunt.loadNpmTasks('grunt-contrib-uglify');
-	grunt.loadNpmTasks('grunt-contrib-cssmin');
 	grunt.loadNpmTasks('grunt-contrib-copy');
 
 	// Default task(s).
-	grunt.registerTask('default', ['uglify', 'cssmin', 'copy']);
+	grunt.registerTask('default', ['uglify', 'copy']);
 
 };

@@ -72,11 +72,12 @@ class TEGENFixPG {
 			pgList
 					.find('.en__pg')
 					.each(function(index) {
-						jQuery(this)
-								.find('.en__pg__display, .en__pg__detail')
+						const thisPG = jQuery(this);
+						thisPG.find('.en__pg__display, .en__pg__detail')
 								.wrapAll('<label></label>')
 								.parent()
 								.attr('for', 'pgListOpt' + index);
+						thisPG.find(`#pgListOpt${index}`).after(jQuery(`label[for="pgListOpt${index}"]`));
 					});
 
 			// run any custom formatting

@@ -1,4 +1,4 @@
-# TEG Engaging Netoworks Fix Premium Gifts
+# TEG Engaging Networks Fix Premium Gifts
 
 "Fix" Engaging Networks' premium gifts list so it can be more easily customized and, you know, add label elements for the radio buttons.
 

@@ -1,5 +1,6 @@
 {
-  "name": "teg-en-premium-fix",
+  "title": "TEG Engaging Networks Fix Premium Gifts",
+  "name": "TEGENFixPG",
   "version": "1.0.0",
   "description": "Add label elements to EN's Premium Gifts.",
   "directories": {
@@ -8,7 +9,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Paul B. Joiner <paulj@engageyourcause.com>",
+  "author": "PMG: The Engage Group, Paul B. Joiner <paulj@engageyourcause.com>",
   "license": "MIT",
   "devDependencies": {
     "git-rev-sync": "^3.0.2",
