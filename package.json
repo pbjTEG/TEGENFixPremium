@@ -1,6 +1,7 @@
 {
   "title": "TEG Engaging Networks Fix Premium Gifts",
-  "name": "TEGENFixPG",
+  "name": "teg-en-fix-pg",
+  "filename": "TEGENFixPG",
   "version": "1.0.0",
   "description": "Add label elements to EN's Premium Gifts.",
   "directories": {
