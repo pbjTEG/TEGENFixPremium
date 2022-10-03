@@ -44,3 +44,15 @@ var TEGENFPGCustom = {
 ```
 
 Drop your definition of ``TEGENFPGCustom`` in a code block at the top of the form.
+
+## Method
+
+# isVisible()
+
+Returns ``true`` if Engaging Networks has populated a premium option in the premium gift block.
+
+```javascript
+if (TEGENPGFixed.isVisible()) {
+   alert("It's visible!")
+}
+```

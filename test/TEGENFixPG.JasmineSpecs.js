@@ -36,6 +36,14 @@ jQuery(document).ready(() => {
 			expect(jQuery('input[name="en__pg"]:checked').val()).toEqual(jQuery('#pgListOpt0').val());
 		}); // end it('should create labels')
 
+		it('should tell whether the premiums are available', () => {
+			jQuery('#en__field_transaction_recurrpay1').click();
+			jQuery('input[value="10"][name="transaction.donationAmt"]').click();
+			expect(TEGENPGFixed.isVisible()).toBeTrue();
+			jQuery('input[value="Other"][name="transaction.donationAmt"]').click();
+			expect(TEGENPGFixed.isVisible()).toBeFalse();
+		}); // end it('should tell whether the premiums are available')
+
 		describe('should accept and run callbacks', () => {
 			beforeAll(() => {
 				spyOn(window.TEGENPGFixed.options, 'afterFix').and.callThrough();

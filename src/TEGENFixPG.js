@@ -57,6 +57,11 @@ class TEGENFixPG {
 
 	get options() { return this.#options; }
 
+	isVisible() {
+		// the premium is "visible" if EN has populated a premium selection
+		return this.#premiumGiftBlock.find('input[type="radio"]').eq(0).val() > 0
+	}
+
 	fixIt() {
 		const pgList = this.#premiumGiftBlock.find('.en__pgList'),
 		      pgOpts = pgList.find('input[name="en__pg"]');
