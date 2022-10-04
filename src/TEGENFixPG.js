@@ -9,6 +9,9 @@ class TEGENFixPG {
 	#observer;
 	#options;
 
+	// public members
+	premiums;
+
 	constructor(Options) {
 		this.#options = {
 			afterSelect : () => true, // function to run when a premium selection is made
@@ -63,12 +66,12 @@ class TEGENFixPG {
 	}
 
 	fixIt() {
-		const pgList = this.#premiumGiftBlock.find('.en__pgList'),
-		      pgOpts = pgList.find('input[name="en__pg"]');
+		const pgList = this.#premiumGiftBlock.find('.en__pgList');
+		this.premiums = pgList.find('input[name="en__pg"]');
 
-		if (pgOpts.length > 0) {
+		if (this.premiums.length > 0) {
 
-			pgOpts
+			this.premiums
 					.each(function(index) {
 						jQuery(this)
 								.attr('id', 'pgListOpt' + index);

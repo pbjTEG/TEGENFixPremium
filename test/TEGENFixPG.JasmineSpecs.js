@@ -44,6 +44,10 @@ jQuery(document).ready(() => {
 			expect(TEGENPGFixed.isVisible()).toBeFalse();
 		}); // end it('should tell whether the premiums are available')
 
+		it('should expose a jQuery object containing the premium options', () => {
+			expect(TEGENPGFixed.premiums.length).toBe(2);
+		}); // end it('should expose a jQuery object containing the premium options')
+
 		describe('should accept and run callbacks', () => {
 			beforeAll(() => {
 				spyOn(window.TEGENPGFixed.options, 'afterFix').and.callThrough();

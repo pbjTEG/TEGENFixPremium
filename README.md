@@ -56,3 +56,13 @@ if (TEGENPGFixed.isVisible()) {
    alert("It's visible!")
 }
 ```
+
+## Property
+
+# premiums
+
+A jQuery object containing the radio buttons for all premium selections
+
+```javascript
+TEGENPGFixed.premiums`
+```
