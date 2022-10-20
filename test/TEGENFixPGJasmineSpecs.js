@@ -14,15 +14,16 @@ jQuery(document).ready(() => {
 			expect(typeof TEGENPGFixed).toBe('object');
 		}); // end it('should do something')
 
-		it('should not block EN\'s base functions', () => {
+		it("should not block EN's base functions", () => {
 			jQuery('#en__field_transaction_recurrpay0').click();
 			jQuery('input[value="Other"][name="transaction.donationAmt"]').click();
+			jQuery('input[name="transaction.donationAmt.other"]').val('1');
 			expect(jQuery('input[name="en__pg"]').length).toEqual(0);
 			// recurring $10 must qualify for premium
 			jQuery('#en__field_transaction_recurrpay1').click();
 			jQuery('input[value="10"][name="transaction.donationAmt"]').click();
 			expect(jQuery('input[name="en__pg"]').length).toEqual(2);
-		}); // end it('should not block EN&rsquo;s base functions')
+		}); // end it('should not block EN's base functions')
 
 		it('should create labels', () => {
 			// recurring $10 must qualify for premium
@@ -52,6 +53,7 @@ jQuery(document).ready(() => {
 			beforeAll(() => {
 				spyOn(window.TEGENPGFixed.options, 'afterFix').and.callThrough();
 				spyOn(window.TEGENPGFixed.options, 'afterSelect').and.callThrough();
+				spyOn(window.TEGENPGFixed.options, 'afterOptions').and.callThrough();
 			});
 
 			it('should include afterFix() defined by the options', () => {
@@ -74,6 +76,16 @@ jQuery(document).ready(() => {
 				jQuery('label[for="pgListOpt1"]').click();
 				expect(jQuery('input[name="en__pg"]:checked').val()).toEqual(jQuery('#pgListOpt1').val());
 				expect(window.TEGENPGFixed.options.afterSelect).toHaveBeenCalled();
+			}); // end it('should exist and be defined by the TEGENFPGCustom object')
+
+			it('should include afterOptions() defined by the options', () => {
+				expect(window.TEGENPGFixed.options.afterOptions()).toBe('TEGENFixPG.options.afterOptions() run.');
+				jQuery('#en__field_transaction_recurrpay1').click();
+				jQuery('input[value="10"][name="transaction.donationAmt"]').click();
+				jQuery('input[name="en__pg"]').prop('checked', false);
+				jQuery('label[for="pgListOpt1"]').click();
+				expect(jQuery('input[name="en__pg"]:checked').val()).toEqual(jQuery('#pgListOpt1').val());
+				expect(window.TEGENPGFixed.options.afterOptions).toHaveBeenCalled();
 			}); // end it('should exist and be defined by the TEGENFPGCustom object')
 		}); // end it('should accept and run callbacks')
 	}); // end describe('TEG EN Premium Fix')

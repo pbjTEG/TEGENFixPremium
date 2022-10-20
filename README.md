@@ -26,10 +26,11 @@ Ensure you have jQuery and TEENFixPG in your page template. Then just initialize
 TEGENFixPG has two optional properties which allow you to set callbacks for when a selection is made or when the list of premiums is altered. Both functions are bound to the
 context of the TEENFixPG object with a ``.call(this)`` statement.
 
-| Option      | Default        | Description                                                                                                                                                       |
-|-------------|----------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| afterFix    | ``() => true`` | A function to run just after the list of available premiums is updated with labels.                                                                               |
+| Option      | Default        | Description                                                                                                                                                                                                                                                     |
+|-------------|----------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| afterFix    | ``() => true`` | A function to run just after the list of available premiums is updated with labels.                                                                                                                                                                             |
 | afterSelect | ``() => true`` | A function to run just after the user makes a premium selection. This is bound to the ``onClick`` and ``onKeydown`` event handlers for the premium radio buttons. |
+| afterOptions | ``() => true`` | A funciton to run just after the package populates the ```premiumOptions``` object (see below). |
 
 ## Per-Form Customization
 
@@ -57,12 +58,20 @@ if (TEGENPGFixed.isVisible()) {
 }
 ```
 
-## Property
+## Properties
 
-# premiums
+### options
+
+A plain object containing the options which configured the instance of TEG Engaging Networks Fix Premium Gifts.
+
+### premiums
 
 A jQuery object containing the radio buttons for all premium selections
 
-```javascript
-TEGENPGFixed.premiums`
-```
+### premiumGiftBlock
+
+A jQuery object containing EN's generated premium gifts parent element.
+
+### premiumOptions
+
+A jQuery object containing the option field for each premium. The array offsets match the elements in ```premiums``` and will be an empty object for those premiums without an option field.

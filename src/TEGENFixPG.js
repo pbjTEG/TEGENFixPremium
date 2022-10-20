@@ -8,14 +8,19 @@ class TEGENFixPG {
 	#premiumGiftBlock;
 	#observer;
 	#options;
-
-	// public members
-	premiums;
+	#premiums = [];
+	#premiumOptions = [];
 
 	constructor(Options) {
 		this.#options = {
-			afterSelect : () => true, // function to run when a premium selection is made
-			afterFix : () => true, // function to run after the premiums have been updated
+			afterSelect: () => true, // function to run when a premium selection is made
+			afterFix   : () => true, // function to run after the premiums have been updated
+			afterOptions : () => true, // function to run after the premium options have been updated
+			observerOptions : {
+				childList : true,
+				subtree   : true,
+				attributes: false,
+			},
 		}
 
 		// install optional callbacks
@@ -29,20 +34,32 @@ class TEGENFixPG {
 		// if there's premiums
 		if (this.#premiumGiftBlock.length > 0) {
 
-			this.#observer = new MutationObserver(function() {
+			this.#observer = new MutationObserver(function (mutationList, observer) {
 				// prevent infinite looping
-				this.#observer.disconnect();
-				// update premium gift options
-				this.fixIt();
+				observer.disconnect();
+				let newRadio  = false,
+				    newSelect = false;
+
+				// determine what changed
+				for (const mutation of mutationList) {
+
+					// if new child change
+					if (mutation.type === 'childList') {
+						// if we just got new premiums
+						newRadio = newRadio || mutation.target.classList.contains('en__pg--selected')
+						// if we just got a new options
+						newSelect = newSelect || mutation.target.classList.contains('en__pg__optionType');
+					}
+				}
+				// update premiums list
+				if (newRadio) this.fixIt();
+				// update options list
+				if (newSelect) this.addOptions();
 				// re-engage the observer
 				this.#observer
 				    .observe(
 						    this.#premiumGiftBlock.find('.en__pgList')[0],
-						    {
-							    childList : true,
-							    subtree   : false,
-							    attributes: false,
-						    }
+						    this.options.observerOptions
 				    );
 			}.bind(this));
 
@@ -50,48 +67,78 @@ class TEGENFixPG {
 			this.#observer
 			    .observe(
 					    this.#premiumGiftBlock.find('.en__pgList')[0],
-					    {
-						    childList : true,
-						    subtree   : true
-					    }
+					    this.options.observerOptions
 			    );
 		} // end if there are premiums on the form
 	} // end constructor
 
 	get options() { return this.#options; }
 
+	get premiumGiftBlock() { return this.#premiumGiftBlock };
+
+	get premiums() { return this.#premiums }
+
+	get premiumOptions() { return this.#premiumOptions }
+
 	isVisible() {
-		// the premium is "visible" if EN has populated a premium selection
+		// the premium is only "visible" if EN has populated a premium selection
 		return this.#premiumGiftBlock.find('input[type="radio"]').eq(0).val() > 0
 	}
 
 	fixIt() {
-		const pgList = this.#premiumGiftBlock.find('.en__pgList');
-		this.premiums = pgList.find('input[name="en__pg"]');
+		const fixer  = this,
+		      pgList = fixer.#premiumGiftBlock.find('.en__pgList');
+		fixer.#premiums = pgList.find('input[name="en__pg"]');
 
-		if (this.premiums.length > 0) {
+		if (fixer.#premiums.length > 0) {
 
-			this.premiums
-					.each(function(index) {
-						jQuery(this)
-								.attr('id', 'pgListOpt' + index);
-					})
-					.on('click keydown', (event) => this.#options.afterSelect.call(this, event));
+			fixer.#premiums
+			     .each(function (index) {
+				     const thisRadio = jQuery(this);
+				     thisRadio.attr('id', 'pgListOpt' + index);
+			     })
+			     .on('click keydown', (event) => fixer.#options.afterSelect.call(this, event));
+
 			pgList
 					.find('.en__pg')
-					.each(function(index) {
-						const thisPG = jQuery(this);
-						thisPG.find('.en__pg__display, .en__pg__detail')
-								.wrapAll('<label></label>')
-								.parent()
-								.attr('for', 'pgListOpt' + index);
+					.each(function (index) {
+						const thisPG = jQuery(this),
+						labelContent = thisPG.find('.en__pg__display, .en__pg__detail');
+						// remove label from previous run
+						labelContent.unwrap('label')
+						// wrap the item in a label
+						labelContent.wrapAll(`<label for="pgListOpt${index}"></label>`);
+						// ensure label immediately follows the radio button
 						thisPG.find(`#pgListOpt${index}`).after(jQuery(`label[for="pgListOpt${index}"]`));
 					});
 
 			// run any custom formatting
-			this.#options.afterFix.call(this);
+			fixer.#options.afterFix.call(fixer);
 			// catch the default selection with afterSelect()
-			this.#options.afterSelect.call(this);
+			fixer.#options.afterSelect.call(fixer);
 		} // end if there are premiums visible
 	} // end fixIt()
+
+	addOptions() {
+		const fixer = this;
+		fixer.#premiumOptions = []
+		fixer.#premiums
+		     .each(function (index) {
+			     const thisRadio  = jQuery(this),
+			           thisID     = `pgOptType${thisRadio.val()}`,
+			           thisSelect = thisRadio.parents('.en__pg')
+			                                 .find('select')
+			                                 .attr('id', thisID);
+			           thisSelect.siblings('label').attr('for', thisID);
+
+			     if (fixer.#premiumOptions.length > 0) {
+				     fixer.#premiumOptions.add(thisSelect);
+
+			     } else {
+				     fixer.#premiumOptions = thisSelect;
+			     }
+		     });
+		// catch the default selection with afterSelect()
+		fixer.#options.afterOptions.call(fixer);
+	}
 } // end class TEGENFixPG
