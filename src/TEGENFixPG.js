@@ -20,7 +20,7 @@ class TEGENFixPG {
 				childList : true,
 				subtree   : true,
 				attributes: false,
-			},
+			}
 		}
 
 		// install optional callbacks
@@ -55,6 +55,11 @@ class TEGENFixPG {
 				if (newRadio) this.fixIt();
 				// update options list
 				if (newSelect) this.addOptions();
+				// if we have neither then clear it
+				if (!(newRadio || newSelect)) {
+					this.#premiums = [];
+					this.#premiumOptions = [];
+				}
 				// re-engage the observer
 				this.#observer
 				    .observe(
@@ -69,6 +74,8 @@ class TEGENFixPG {
 					    this.#premiumGiftBlock.find('.en__pgList')[0],
 					    this.options.observerOptions
 			    );
+			this.fixIt();
+			this.addOptions();
 		} // end if there are premiums on the form
 	} // end constructor
 
@@ -123,7 +130,7 @@ class TEGENFixPG {
 		const fixer = this;
 		fixer.#premiumOptions = []
 		fixer.#premiums
-		     .each(function (index) {
+		     .each?.(function (index) {
 			     const thisRadio  = jQuery(this),
 			           thisID     = `pgOptType${thisRadio.val()}`,
 			           thisSelect = thisRadio.parents('.en__pg')
