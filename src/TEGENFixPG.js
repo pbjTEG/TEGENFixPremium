@@ -8,8 +8,8 @@ class TEGENFixPG {
 	#premiumGiftBlock;
 	#observer;
 	#options;
-	#premiums = [];
-	#premiumOptions = [];
+	#premiums = jQuery();
+	#premiumOptions = jQuery();
 
 	constructor(Options) {
 		this.#options = {
@@ -57,8 +57,8 @@ class TEGENFixPG {
 				if (newSelect) this.addOptions();
 				// if we have neither then clear it
 				if (!(newRadio || newSelect)) {
-					this.#premiums = [];
-					this.#premiumOptions = [];
+					this.#premiums = jQuery();
+					this.#premiumOptions = jQuery();
 				}
 				// re-engage the observer
 				this.#observer
@@ -128,7 +128,7 @@ class TEGENFixPG {
 
 	addOptions() {
 		const fixer = this;
-		fixer.#premiumOptions = []
+		fixer.#premiumOptions = jQuery();
 		fixer.#premiums
 		     .each?.(function (index) {
 			     const thisRadio  = jQuery(this),
@@ -139,13 +139,13 @@ class TEGENFixPG {
 			           thisSelect.siblings('label').attr('for', thisID);
 
 			     if (fixer.#premiumOptions.length > 0) {
-				     fixer.#premiumOptions.add(thisSelect);
+				     fixer.#premiumOptions = fixer.#premiumOptions.add(thisSelect);
 
 			     } else {
 				     fixer.#premiumOptions = thisSelect;
 			     }
 		     });
-		// catch the default selection with afterSelect()
+		// catch the default selection
 		fixer.#options.afterOptions.call(fixer);
 	}
 } // end class TEGENFixPG
