@@ -12,7 +12,7 @@ module.exports = function (grunt) {
 		                            '*\n' +
 		                            '* Author: <%= pkg.author %>\n' +
 		                            '* Copyright (c) <%= grunt.template.today("yyyy") %> PMG: The Engage Group\n' +
-		                            '* License <%= pkg.licence %>\n' +
+		                            '* License <%= pkg.license %>\n' +
 		                            '*\n' +
 		                            '* Release:\n' +
 		                            '*   Branch: ' + thisBranch + '\n' +
@@ -20,7 +20,6 @@ module.exports = function (grunt) {
 		                            '*   Date:   ' + grunt.template.today('yyyymmdd') + '\n' +
 		                            '*/\n',
 		                 postFix  : `_${thisTag}`,
-		                 postFixEN: `_${thisTag}`.replace(/\./g, '_'),
 		                 uglify   : {
 			                 options: {
 				                 banner   : '<%= banner %>',
@@ -37,11 +36,6 @@ module.exports = function (grunt) {
 					                 {
 						                 src : 'dist/<%= pkg.filename %>.min.js',
 						                 dest: 'dist/<%= pkg.filename %><%= postFix %>.min.js',
-					                 },
-					                 // EN no longer allows multiple "."
-					                 {
-						                 src : 'dist/<%= pkg.filename %>.min.js',
-						                 dest: 'dist/<%= pkg.filename %><%= postFixEN %>_min.js',
 					                 },
 					                 {
 						                 src : 'dist/<%= pkg.filename %>.min.js.map',
