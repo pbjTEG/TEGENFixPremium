@@ -46,9 +46,6 @@ class TEGENFixPG {
 		if (this.#premiumGiftBlock.length > 0) {
 
 			this.#observer = new MutationObserver(function (mutationList, observer) {
-				console.log('%c TEGENFixPG.#observer', 'font-weight: bold; color: yellow;');//log
-				console.log('%c mutationList', 'font-weight: bold; color: white;');
-				console.log(mutationList);//log
 				// prevent infinite looping
 				observer.disconnect();
 				let newRadio  = false,
@@ -146,7 +143,7 @@ class TEGENFixPG {
 		const fixer = this;
 		fixer.#premiumOptions = jQuery();
 		fixer.#premiums
-			  .each?.(function () {
+			  .each?.(function (index) {
 			const thisRadio  = jQuery(this),
 					radioVal   = thisRadio.val(),
 					thisID     = `pgOptType${radioVal}`,
