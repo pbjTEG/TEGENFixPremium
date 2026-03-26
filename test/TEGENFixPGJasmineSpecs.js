@@ -1,44 +1,25 @@
 // noinspection JSJQueryEfficiency
-
 jQuery(document).ready(() => {
 
 	describe('TEG EN Premium Fix', () => {
-		/*beforeAll((done) => {
-			setTimeout(() => {
-				jQuery('form').hide();
-				done();
-			}, 1000);
-		});*/
-
-		/*beforeEach(function () {
-			jasmine.clock().install();
-		})
-
-		afterEach(function () {
-			jasmine.clock().uninstall();
-		});*/
-
 		it('should initialize', () => {
 			expect(typeof TEGENPGFixed).toBe('object');
 		}); // end it('should do something')
 
 		it("should not block EN's base functions", async () => {
-			jQuery('#en__field_transaction_recurrpay0').click();
+			jQuery('#en__field_transaction_recurrfreq0').click();
 			jQuery('input[value="Other"][name="transaction.donationAmt"]').click();
-			jQuery('input[name="transaction.donationAmt.other"]').val('1');
+			jQuery('[name="transaction.donationAmt.other"]').val('').change();
 			await TEGENPGFixed.fixIt.call(TEGENPGFixed);
 			expect(jQuery('input[name="en__pg"]').length).toEqual(0);
-			// recurring $10 must qualify for premium
-			jQuery('#en__field_transaction_recurrpay1').click();
-			jQuery('input[value="10"][name="transaction.donationAmt"]').click();
+			jQuery('input[value="20"][name="transaction.donationAmt"]').click();
 			await TEGENPGFixed.fixIt.call(TEGENPGFixed);
 			expect(jQuery('input[name="en__pg"]').length).toEqual(2);
 		}, 10000); // end it('should not block EN's base functions')
 
 		it('should create labels', () => {
-			// recurring $10 must qualify for premium
-			jQuery('#en__field_transaction_recurrpay1').click();
-			jQuery('input[value="10"][name="transaction.donationAmt"]').click();
+			jQuery('#en__field_transaction_recurrfreq2').click();
+			jQuery('input[value="75"][name="transaction.donationAmt"]').click();
 			jQuery('input[name="en__pg"]').prop('checked', false);
 			jQuery('label[for="pgListOpt1"]').click();
 			expect(jQuery('input[name="en__pg"]:checked').val()).toEqual(jQuery('#pgListOpt1').val());
@@ -48,18 +29,19 @@ jQuery(document).ready(() => {
 		}, 10000); // end it('should create labels')
 
 		it('should tell whether the premiums are available', () => {
-			jQuery('#en__field_transaction_recurrpay1').click();
-			jQuery('input[value="10"][name="transaction.donationAmt"]').click();
+			jQuery('#en__field_transaction_recurrfreq0').click();
+			jQuery('input[value="30"][name="transaction.donationAmt"]').click();
 			expect(TEGENPGFixed.isVisible()).toBeTrue();
 			jQuery('input[value="Other"][name="transaction.donationAmt"]').click();
+			jQuery('[name="transaction.donationAmt.other"]').val('').change();
 			expect(TEGENPGFixed.isVisible()).toBeFalse();
 		}, 10000); // end it('should tell whether the premiums are available')
 
 		it('should expose a jQuery object containing the premium options', async () => {
-			jQuery('#en__field_transaction_recurrpay0').click();
-			jQuery('input[value="200"][name="transaction.donationAmt"]').click();
+			jQuery('#en__field_transaction_recurrfreq1').click();
+			jQuery('input[value="140"][name="transaction.donationAmt"]').click();
 			await TEGENPGFixed.fixIt.call(TEGENPGFixed);
-			expect(TEGENPGFixed.premiums.length).toBe(3);
+			expect(TEGENPGFixed.premiums.length).toBe(2);
 		}, 10000); // end it('should expose a jQuery object containing the premium options')
 
 		describe('should accept and run callbacks', () => {
@@ -71,13 +53,12 @@ jQuery(document).ready(() => {
 
 			it('should include afterFix() defined by the options', () => {
 				expect(window.TEGENPGFixed.options.afterFix()).toBe('TEGENFixPG.options.afterFix() run.');
-				jQuery('#en__field_transaction_recurrpay0').click();
+				jQuery('#en__field_transaction_recurrfreq2').click();
 				jQuery('input[value="Other"][name="transaction.donationAmt"]').click();
 				jQuery('[name="transaction.donationAmt.other"]').val('').change();
 				expect(jQuery('input[name="en__pg"]').length).toEqual(0);
-				// recurring $10 must qualify for premium
-				jQuery('#en__field_transaction_recurrpay1').click();
-				jQuery('input[value="10"][name="transaction.donationAmt"]').click();
+				jQuery('#en__field_transaction_recurrfreq0').click();
+				jQuery('input[value="30"][name="transaction.donationAmt"]').click();
 				expect(jQuery('input[name="en__pg"]').length).toEqual(2);
 				expect(window.TEGENPGFixed.options.afterFix).toHaveBeenCalled();
 			}); // end it('should exist and defined by the options')
@@ -94,8 +75,8 @@ jQuery(document).ready(() => {
 
 			it('should include afterOptions() defined by the options', () => {
 				expect(window.TEGENPGFixed.options.afterOptions()).toBe('TEGENFixPG.options.afterOptions() run.');
-				jQuery('#en__field_transaction_recurrpay1').click();
-				jQuery('input[value="10"][name="transaction.donationAmt"]').click();
+				jQuery('#en__field_transaction_recurrfreq1').click();
+				jQuery('input[value="140"][name="transaction.donationAmt"]').click();
 				jQuery('input[name="en__pg"]').prop('checked', false);
 				jQuery('label[for="pgListOpt1"]').click();
 				expect(jQuery('input[name="en__pg"]:checked').val()).toEqual(jQuery('#pgListOpt1').val());

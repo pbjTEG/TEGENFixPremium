@@ -1,14 +1,17 @@
-<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-<script src="https://aaf1a18515da0e792f78-c27fdabe952dfc357fe25ebf5c8897ee.ssl.cf5.rackcdn.com/{your site ID}/TEGENFixPG.js" referrerpolicy="no-referrer"></script>
+<!--suppress JSUnresolvedLibraryURL -->
+<script src="https://code.jquery.com/jquery-4.0.0.slim.min.js" integrity="sha256-8DGpv13HIm+5iDNWw1XqxgFB4mj+yOKFNb+tHBZOowc=" crossorigin="anonymous" nonce="{nonce}"></script>
+<script src="https://aaf1a18515da0e792f78-c27fdabe952dfc357fe25ebf5c8897ee.ssl.cf5.rackcdn.com/2175/TEGENFixPG_v3.1.js?v=1769786582000" referrerpolicy="no-referrer"></script>
 <script>
 	var TEGENFPGCustom = {
-		afterSelect : () => 'TEGENFPGCustom overrides TEGENFixPG.options.afterSelect().'
-	}
+		afterSelect: () => 'TEGENFPGCustom overrides TEGENFixPG.options.afterSelect().',
+	};
 
-	jQuery(document).ready(() => {
+	jQuery(() => {
+
 		window.TEGENPGFixed = new TEGENFixPG({
 			                                     afterFix    : () => 'TEGENFixPG.options.afterFix() run.',
-			                                     afterSelect : () => 'TEGENFix.options.afterSelect() run.'
+			                                     afterSelect : () => 'TEGENFix.options.afterSelect() run.',
+			                                     afterOptions: () => 'TEGENFixPG.options.afterOptions() run.',
 		                                     });
-	}); // end jQuery(document).ready
+	}); // end document.ready()
 </script>
