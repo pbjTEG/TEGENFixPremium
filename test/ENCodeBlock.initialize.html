@@ -1,6 +1,6 @@
 <!--suppress JSUnresolvedLibraryURL -->
 <script src="https://code.jquery.com/jquery-4.0.0.slim.min.js" integrity="sha256-8DGpv13HIm+5iDNWw1XqxgFB4mj+yOKFNb+tHBZOowc=" crossorigin="anonymous" nonce="{nonce}"></script>
-<script src="https://aaf1a18515da0e792f78-c27fdabe952dfc357fe25ebf5c8897ee.ssl.cf5.rackcdn.com/2175/TEGENFixPG_v3.1.js?v=1769786582000" referrerpolicy="no-referrer"></script>
+<script src="https://aaf1a18515da0e792f78-c27fdabe952dfc357fe25ebf5c8897ee.ssl.cf5.rackcdn.com/2175/TEGENFixPG.js" referrerpolicy="no-referrer"></script>
 <script>
 	var TEGENFPGCustom = {
 		afterSelect: () => 'TEGENFPGCustom overrides TEGENFixPG.options.afterSelect().',
@@ -10,8 +10,19 @@
 
 		window.TEGENPGFixed = new TEGENFixPG({
 			                                     afterFix    : () => 'TEGENFixPG.options.afterFix() run.',
-			                                     afterSelect : () => 'TEGENFix.options.afterSelect() run.',
+			                                     afterSelect : () => {
+				                                     console.log('TEGENFix.options.afterSelect() run.');
+				                                     return 'TEGENFix.options.afterSelect() run.';
+			                                     },
 			                                     afterOptions: () => 'TEGENFixPG.options.afterOptions() run.',
+			                                     autoSelect  : true,
 		                                     });
 	}); // end document.ready()
 </script>
+<!--suppress CssUnusedSymbol -->
+<style>
+	img.en__pg__image {
+		max-height : 10rem;
+		max-width  : 10rem;
+	}
+</style>

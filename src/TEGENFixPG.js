@@ -22,17 +22,7 @@ class TEGENFixPG {
 				attributes: false,
 			},
 			autoSelect     : false, // select the associated premium when a premium option is changed
-
-			/* If a select field of premium options includes an opt-out, de-select
-			 * the associated premium.
-			 *
-			 * key = value of premium radio
-			 * value = value of de-selection option
-			 */
-			selectExclude: {
-				'0': '0'
-			},
-		}
+		};
 
 		// install optional callbacks
 		jQuery.extend(true, this.#options, Options);
@@ -49,7 +39,7 @@ class TEGENFixPG {
 				// prevent infinite looping
 				observer.disconnect();
 				let newRadio  = false,
-					 newSelect = false;
+				    newSelect = false;
 
 				// determine what changed
 				for (const mutation of mutationList) {
@@ -73,59 +63,57 @@ class TEGENFixPG {
 				}
 				// re-engage the observer
 				this.#observer
-					 .observe(
-						 this.#premiumGiftBlock.find('.en__pgList')[0],
-						 this.options.observerOptions
-					 );
+				    .observe(
+					    this.#premiumGiftBlock.find('.en__pgList')[0],
+					    this.options.observerOptions
+				    );
 			}.bind(this));
 
 			// start the observation
 			this.#observer
-				 .observe(
-					 this.#premiumGiftBlock.find('.en__pgList')[0],
-					 this.options.observerOptions
-				 );
+			    .observe(
+				    this.#premiumGiftBlock.find('.en__pgList')[0],
+				    this.options.observerOptions
+			    );
 			this.fixIt();
-			this.addOptions();
 		} // end if there are premiums on the form
 	} // end constructor
 
 	get options() { return this.#options; }
 
-	get premiumGiftBlock() { return this.#premiumGiftBlock };
+	get premiumGiftBlock() { return this.#premiumGiftBlock; };
 
-	get premiums() { return this.#premiums }
+	get premiums() { return this.#premiums; }
 
-	get premiumOptions() { return this.#premiumOptions }
+	get premiumOptions() { return this.#premiumOptions; }
 
 	isVisible() {
 		// the premium is only "visible" if EN has populated a premium selection
-		return this.#premiumGiftBlock.find('input[type="radio"]').eq(0).val() > 0
+		return this.#premiumGiftBlock.find('input[type="radio"]').eq(0).val() > 0;
 	}
 
 	fixIt() {
 		const fixer  = this,
-				pgList = fixer.#premiumGiftBlock.find('.en__pgList');
+		      pgList = fixer.#premiumGiftBlock.find('.en__pgList');
 		fixer.#premiums = pgList.find('input[name="en__pg"]');
 
 		if (fixer.#premiums.length > 0) {
 
 			fixer.#premiums
-				  .each(function (index) {
-					  const thisRadio = jQuery(this);
-					  thisRadio.attr('id', 'pgListOpt' + index);
-				  })
-				// make sure there's only one set
-				  .off('click.ENPGFix keydonwn.ENPGFix')
-				  .on('click.ENPGFix keydonwn.ENPGFix', (event) => fixer.#options.afterSelect.call(this, event));
+			     .each(function (index) {
+				     const thisRadio = jQuery(this);
+				     thisRadio.attr('id', 'pgListOpt' + index);
+			     })
+			     .off('click.ENPGFix keydonwn.ENPGFix')
+			     .on('click.ENPGFix keydonwn.ENPGFix', (event) => fixer.#options.afterSelect.call(this, event));
 
 			pgList
 				.find('.en__pg')
 				.each(function (index) {
 					const thisPG       = jQuery(this),
-							labelContent = thisPG.find('.en__pg__display, .en__pg__detail');
+					      labelContent = thisPG.find('.en__pg__display, .en__pg__detail');
 					// remove label from previous run
-					labelContent.unwrap('label')
+					labelContent.unwrap('label');
 					// wrap the item in a label
 					labelContent.wrapAll(`<label for="pgListOpt${index}"></label>`);
 					// ensure label immediately follows the radio button
@@ -143,13 +131,13 @@ class TEGENFixPG {
 		const fixer = this;
 		fixer.#premiumOptions = jQuery();
 		fixer.#premiums
-			  .each?.(function (index) {
+		     .each?.(function (index) {
 			const thisRadio  = jQuery(this),
-					radioVal   = thisRadio.val(),
-					thisID     = `pgOptType${radioVal}`,
-					thisSelect = thisRadio.parents('.en__pg')
-												 .find('select')
-												 .attr('id', thisID);
+			      radioVal   = thisRadio.val(),
+			      thisID     = `pgOptType${radioVal}`,
+			      thisSelect = thisRadio.parents('.en__pg')
+			                            .find('select')
+			                            .attr('id', thisID);
 			thisSelect.siblings('label').attr('for', thisID);
 
 			// auto-select premium when option changes
@@ -158,26 +146,12 @@ class TEGENFixPG {
 					// make sure there's only one
 					.off('change.ENPGFix')
 					.on('change.ENPGFix', () => {
-						// TODO: Please, for the love of God, make this more efficient
-						if (typeof fixer.options.selectExclude[radioVal] === 'undefined' ||
-							 thisSelect.val() !== fixer.options.selectExclude[radioVal]) {
-							setTimeout(() => {
-								fixer.premiums
-									  .filter(`[value="${radioVal}"]`)
-									  .prop('checked', true)
-									  .trigger('click');
-							}, 200);
-						} else {
-							if (typeof fixer.options.selectExclude[radioVal] !== 'undefined' &&
-								 thisSelect.val() === fixer.options.selectExclude[radioVal]) {
-								setTimeout(() => {
-									fixer.premiums
-										  .prop('checked', false)
-										  .trigger('click');
-								}, 200);
-							}
-						}
-					})
+						setTimeout(() => {
+							fixer.premiums
+							     .prop('checked', false)
+							     .trigger('click');
+						}, 200);
+					});
 			} // end if autoSelect
 
 			if (fixer.#premiumOptions.length > 0) {

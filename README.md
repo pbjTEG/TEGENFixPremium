@@ -1,10 +1,10 @@
-# TEG Engaging Networks Fix Premium Gifts
+# TEG Engaging Networks &ldquo;Fix&rdquo; Premium Gifts
 
-"Fix" Engaging Networks' premium gifts list so it can be more easily customized and, you know, add label elements for the radio buttons.
+Not really a &ldquo;fix&rdquo; Engaging Networks' premium gifts since it's not broken. This modifies the list so it can be more easily customized and add label elements for the radio buttons.
 
 ## Requires
 
-* jQuery 3.6+ [https://releases.jquery.com/](https://releases.jquery.com/)
+* jQuery 4 [https://releases.jquery.com/](https://releases.jquery.com/)
 
 ## Installation
 
