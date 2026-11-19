@@ -70,18 +70,18 @@ class TEGENFixPG {
 				}
 				// re-engage the observer
 				fixer.#observer
-				    .observe(
-					    fixer.#premiumGiftBlock.querySelector('.en__pgList'),
-					    fixer.options.observerOptions
-				    );
+				     .observe(
+					     fixer.#premiumGiftBlock.querySelector('.en__pgList'),
+					     fixer.options.observerOptions
+				     );
 			}.bind(this));
 
 			// start the observation loop
 			_instance.#observer
-			    .observe(
-				    _instance.#premiumGiftBlock.querySelector('.en__pgList'),
-				    _instance.options.observerOptions
-			    );
+			         .observe(
+				         _instance.#premiumGiftBlock.querySelector('.en__pgList'),
+				         _instance.options.observerOptions
+			         );
 			_instance.fixIt();
 		} // end if there are premiums on the form
 	} // end constructor
@@ -110,18 +110,18 @@ class TEGENFixPG {
 			fixer.#premiums
 			     .forEach(function (item, index) {
 				     item.setAttribute('id', 'pgItem' + index);
-
-				     ['click.ENPGFix', 'keydonwn.ENPGFix'].forEach((eventType) => {
-					     item.addEventListener(eventType, (event) => fixer.#options.afterSelect.call(this, event));
-				     });
+				     item.addEventListener('click.ENPGFix', (event) => fixer.#options.afterSelect.call(this, event));
 			     });
 
 			pgList.querySelectorAll('.en__pg__body')
 			      .forEach((thisPremium, index) => {
+
+				      if (fixer.#premiumGiftBlock.querySelectorAll(`label[for="pgItem${index}"]`).length > 0) return;
+
 				      const labelContent = thisPremium.querySelectorAll('.en__pg__display, .en__pg__detail'),
 				            newLabel     = document.createElement('label');
 
-						thisPremium.querySelector('[name="en__pg"]').setAttribute('id', `pgItem${index}`);
+				      thisPremium.querySelector('[name="en__pg"]').setAttribute('id', `pgItem${index}`);
 				      newLabel.setAttribute('for', `pgItem${index}`);
 				      thisPremium.appendChild(newLabel);
 
